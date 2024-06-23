@@ -13,6 +13,10 @@ const bookSchema = mongoose.Schema(
     publishYear: {
       type: Number,
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
   },
   { timestamps: true }
 );

@@ -3,11 +3,16 @@ import mongoose from "mongoose";
 import { mongoDbUrl } from "./config.js";
 import booksRoute from "./routes/booksRoute.js";
 import cors from "cors";
+import userRoute from "./routes/userRoute.js";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
 mongoose
-  .connect(mongoDbUrl)
+  .connect("mongodb://127.0.0.1:27017/bookStore")
   .then(() => {
     console.log("Database connected");
   })
@@ -16,12 +21,20 @@ mongoose
   });
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    methods: "*",
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 
 // ========= ROUTE =========
 app.use("/books", booksRoute);
+app.use("/user", userRoute);
 
-app.listen(3000, () => {
+app.listen(4000, () => {
   console.log("Server running in port 3000");
 });
 
